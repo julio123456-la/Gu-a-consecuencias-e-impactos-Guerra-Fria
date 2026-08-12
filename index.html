@@ -3,77 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mis Juegos Escolares</title>
+    <!-- El título inicial simula ser un portal de estudios común -->
+    <title>Google Classroom - Mis Tareas</title>
+    <link id="favicon" rel="icon" type="image/x-icon" href="https://gstatic.com">
+    
     <style>
-        body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            background: #121212; 
-            color: #ffffff; 
-            text-align: center; 
-            padding: 50px 20px; 
-            margin: 0;
-        }
-        h1 { color: #00ff88; font-size: 2.5rem; margin-bottom: 10px; }
-        p { color: #aaaaaa; font-size: 1.1rem; margin-bottom: 40px; }
-        .grid {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-        .btn { 
-            background: #1e1e1e; 
-            color: #00ff88; 
-            border: 2px solid #00ff88; 
-            padding: 15px 30px; 
-            font-size: 18px; 
-            font-weight: bold;
-            cursor: pointer; 
-            border-radius: 8px; 
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0, 255, 136, 0.1);
-        }
-        .btn:hover { 
-            background: #00ff88; 
-            color: #121212;
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(0, 255, 136, 0.3);
-        }
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; font-family: Arial, sans-serif; background-color: #1a1a1a; }
+        
+        /* Interfaz inicial del Portal de Juegos */
+        #portal-menu { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; color: white; text-align: center; }
+        h1 { color: #00ff88; font-size: 2.3rem; margin-bottom: 5px; }
+        p { color: #888; margin-bottom: 30px; }
+        .game-btn { background: #282828; color: #00ff88; border: 2px solid #00ff88; padding: 15px 35px; font-size: 18px; font-weight: bold; cursor: pointer; border-radius: 8px; transition: all 0.2s ease; }
+        .game-btn:hover { background: #00ff88; color: #1a1a1a; transform: scale(1.05); }
+        
+        /* Contenedor del Juego (Oculto al inicio) */
+        #game-frame-container { display: none; width: 100%; height: 100%; position: absolute; top: 0; left: 0; z-index: 999; background: #000; }
+        iframe { width: 100%; height: 100%; border: none; margin: 0; padding: 0; }
+
+        /* Botón de pánico secreto (pequeño y discreto) */
+        #panic-button { position: fixed; bottom: 8px; right: 8px; z-index: 10000; background: rgba(255, 0, 0, 0.3); color: rgba(255, 255, 255, 0.6); border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 11px; display: none; }
+        #panic-button:hover { background: rgba(255, 0, 0, 0.8); color: white; }
     </style>
 </head>
 <body>
 
-    <h1>Portal de Juegos Desbloqueados</h1>
-    <p>Selecciona un juego para abrirlo de forma segura en una pestaña oculta (about:blank):</p>
-    
-    <div class="grid">
-        <!-- BOTÓN DE EAGLERCRAFT -->
-        <button class="btn" onclick="abrirJuego('https://svaaps.github.io/eaglercrafthtml/')">
-            🎮 Jugar Eaglercraft (Minecraft 1.8)
-        </button>
+    <!-- MENÚ DEL PORTAL (Lo que ves al entrar) -->
+    <div id="portal-menu">
+        <h1>Portal de Juegos Desbloqueados</h1>
+        <p>Alojado de forma segura en GitHub Pages.</p>
+        <!-- Botón para gatillar el juego internamente -->
+        <button class="game-btn" onclick="iniciarMinecraft()">🎮 Jugar Eaglercraft (Minecraft 1.8)</button>
     </div>
 
+    <!-- PANTALLA COMPLETA DONDE SE CARGA EL JUEGO -->
+    <div id="game-frame-container">
+        <!-- Servidor espejo estable de Eaglercraft -->
+        <iframe id="game-element" src=""></iframe>
+    </div>
+
+    <!-- BOTÓN DE EMERGENCIA -->
+    <button id="panic-button" onclick="evacuarJuego()">Cerrar pantalla</button>
+
     <script>
-    function abrirJuego(urlDelJuego) {
-        // 1. Crea la pestaña en blanco
-        var win = window.open();
-        win.document.body.style.margin = '0';
-        win.document.body.style.height = '100vh';
-        win.document.body.style.backgroundColor = '#000';
+    function iniciarMinecraft() {
+        // 1. Modifica la pestaña actual para camuflarla como Google Docs si pasa el profesor
+        document.title = "Google Docs - Documento sin título";
+        document.getElementById("favicon").href = "https://gstatic.com";
         
-        // 2. Genera el contenedor iframe a pantalla completa
-        var iframe = win.document.createElement('iframe');
-        iframe.style.border = 'none';
-        iframe.style.width = '100%';
-        iframe.style.height = '100%';
-        iframe.style.margin = '0';
-        iframe.style.padding = '0';
+        // 2. Carga el juego directamente en nuestro iframe interno seguro
+        var juegoIframe = document.getElementById('game-element');
+        juegoIframe.src = "https://github.io"; 
+
+        // 3. Intercambia las pantallas sin abrir ventanas emergentes nuevas
+        document.getElementById('portal-menu').style.display = 'none';
+        document.getElementById('game-frame-container').style.display = 'block';
+        document.getElementById('panic-button').style.display = 'block';
+    }
+
+    function evacuaciarJuego() {
+        // Devuelve todo a la simulación escolar de Google Classroom al instante
+        document.title = "Google Classroom - Mis Tareas";
+        document.getElementById("favicon").href = "https://gstatic.com";
         
-        // 3. Asigna la URL del juego elegido
-        iframe.src = urlDelJuego; 
+        // Destruye el proceso del juego para que deje de sonar/cargar
+        document.getElementById('game-element').src = "";
         
-        // 4. Introduce el iframe dentro de about:blank
-        win.document.body.appendChild(iframe);
+        // Regresa al menú del portal
+        document.getElementById('game-frame-container').style.display = 'none';
+        document.getElementById('panic-button').style.display = 'none';
+        document.getElementById('portal-menu').style.display = 'flex';
     }
     </script>
 
