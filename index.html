@@ -3,77 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Título inicial falso para camuflaje -->
     <title>Google Classroom - Mis Tareas</title>
     <link id="favicon" rel="icon" type="image/x-icon" href="https://gstatic.com">
-    
     <style>
         body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; font-family: Arial, sans-serif; background-color: #1a1a1a; }
-        
-        /* Menú de inicio del portal */
         #portal-menu { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; color: white; text-align: center; }
         h1 { color: #00ff88; font-size: 2.3rem; margin-bottom: 5px; }
         p { color: #888; margin-bottom: 30px; }
         .game-btn { background: #282828; color: #00ff88; border: 2px solid #00ff88; padding: 15px 35px; font-size: 18px; font-weight: bold; cursor: pointer; border-radius: 8px; transition: all 0.2s ease; }
         .game-btn:hover { background: #00ff88; color: #1a1a1a; transform: scale(1.05); }
-        
-        /* Contenedor del Juego a pantalla completa */
-        #game-frame-container { display: none; width: 100%; height: 100%; position: absolute; top: 0; left: 0; z-index: 999; background: #000; }
-        iframe { width: 100%; height: 100%; border: none; margin: 0; padding: 0; }
-
-        /* Botón de pánico secreto en la esquina inferior derecha */
-        #panic-button { position: fixed; bottom: 8px; right: 8px; z-index: 10000; background: rgba(255, 0, 0, 0.3); color: rgba(255, 255, 255, 0.6); border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 11px; display: none; }
-        #panic-button:hover { background: rgba(255, 0, 0, 0.8); color: white; }
     </style>
 </head>
 <body>
 
-    <!-- MENÚ DEL PORTAL (Lo primero que se ve al entrar) -->
+    <!-- MENÚ DEL PORTAL -->
     <div id="portal-menu">
         <h1>Portal de Juegos Desbloqueados</h1>
         <p>Alojado de forma segura en tu repositorio de GitHub.</p>
-        <button class="game-btn" onclick="iniciarMinecraft()">🎮 Jugar Eaglercraft 1.6.0</button>
+        <button class="game-btn" onclick="iniciarMinecraftOculto()">🎮 Jugar Eaglercraft (Modo Invisible)</button>
     </div>
-
-    <!-- CONTENEDOR DEL JUEGO -->
-    <div id="game-frame-container">
-        <!-- El iframe está vacío al inicio para que no gaste internet ni suene antes de tiempo -->
-        <iframe id="game-element" src="" allow="fullscreen; autoplay"></iframe>
-    </div>
-
-    <!-- BOTÓN DE ESCAPE RÁPIDO -->
-    <button id="panic-button" onclick="evacuarJuego()">Cerrar pantalla</button>
 
     <script>
-    function iniciarMinecraft() {
-        // 1. Cambia la pestaña a Google Docs para despistar
-        document.title = "Google Docs - Documento sin título";
-        document.getElementById("favicon").href = "https://gstatic.com";
-        
-        // 2. Inyecta tu enlace exacto de Eaglercraft
-        var juegoIframe = document.getElementById('game-element');
-        juegoIframe.src = "https://eaglercraft.ir/es/play/astra-1.6.0?touch=false&userscript="; 
+        function iniciarMinecraftOculto() {
+            // 1. Creamos una ventana completamente nueva en blanco
+            var nuevaVentana = window.open("about:blank", "_blank");
+            
+            if (!nuevaVentana) {
+                alert("Por favor, permite los pop-ups (ventanas emergentes) en esta página para que el juego pueda abrirse de forma oculta.");
+                return;
+            }
 
-        // 3. Oculta el menú y muestra el juego a pantalla completa
-        document.getElementById('portal-menu').style.display = 'none';
-        document.getElementById('game-frame-container').style.display = 'block';
-        document.getElementById('panic-button').style.display = 'block';
-    }
+            // 2. Definimos el servidor alternativo sin extensión .io (Usamos una réplica estable .org)
+            var enlaceJuego = "https://eaglercraft.org"; 
 
-    function evacuarJuego() {
-        // Al presionar el botón rojo, vuelve a simular Google Classroom de golpe
-        document.title = "Google Classroom - Mis Tareas";
-        document.getElementById("favicon").href = "https://gstatic.com";
-        
-        // Corta la conexión del juego por completo para que no siga sonando
-        document.getElementById('game-element').src = "";
-        
-        // Regresa al menú del portal
-        document.getElementById('game-frame-container').style.display = 'none';
-        document.getElementById('panic-button').style.display = 'none';
-        document.getElementById('portal-menu').style.display = 'flex';
-    }
+            // 3. Escribimos el documento HTML directamente dentro de la pestaña about:blank
+            // De esta forma, Securly solo ve que la pestaña es "about:blank" y no detecta el juego.
+            nuevaVentana.document.write(`
+                <!DOCTYPE html>
+                <html lang="es">
+                <head>
+                    <meta charset="UTF-8">
+                    <title>Google Docs - Documento sin título</title>
+                    <link rel="icon" type="image/x-icon" href="https://gstatic.com">
+                    <style>
+                        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #000; }
+                        iframe { width: 100%; height: 100%; border: none; }
+                    </style>
+                </head>
+                <body>
+                    <iframe src="${enlaceJuego}" allow="fullscreen; autoplay"></iframe>
+                </body>
+                </html>
+            `);
+            
+            nuevaVentana.document.close();
+        }
     </script>
-
 </body>
 </html>
