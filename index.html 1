@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Classroom - Mis Tareas</title>
+    <link id="favicon" rel="icon" type="image/x-icon" href="https://gstatic.com">
+    <style>
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; font-family: Courier, monospace; background-color: #1e1e1e; }
+        #main-container { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; color: #d4d4d4; text-align: center; }
+        h1 { color: #4fc1ff; font-size: 2rem; margin-bottom: 5px; }
+        p { color: #858585; margin-bottom: 30px; font-size: 14px; }
+        .action-btn { background: #252526; color: #4fc1ff; border: 1px solid #4fc1ff; padding: 12px 30px; font-size: 16px; cursor: pointer; border-radius: 4px; transition: all 0.2s ease; font-family: Courier, monospace; }
+        .action-btn:hover { background: #4fc1ff; color: #1e1e1e; }
+    </style>
+</head>
+<body>
+
+    <!-- INTERFAZ CAMUFLADA DE DESARROLLO -->
+    <div id="main-container">
+        <h1>Entorno de Pruebas de Software v1.0</h1>
+        <p>Compilación y despliegue de módulos locales de JavaScript.</p>
+        <button class="action-btn" onclick="inicializarEntorno()">Ejecutar Módulo Pruebas</button>
+    </div>
+
+    <script>
+        function inicializarEntorno() {
+            var entornoMatriz = window.open("about:blank", "_blank");
+            
+            if (!entornoMatriz) {
+                alert("Habilite los pop-ups en el navegador para permitir la ejecución del módulo.");
+                return;
+            }
+
+            // Servidor alternativo con dominio genérico estable (.org)
+            var recursoDestino = "https://eaglercraft.org"; 
+
+            entornoMatriz.document.write(`
+                <!DOCTYPE html>
+                <html lang="es">
+                <head>
+                    <meta charset="UTF-8">
+                    <title>Google Docs - Documento sin título</title>
+                    <link rel="icon" type="image/x-icon" href="https://gstatic.com">
+                    <style>
+                        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #000; }
+                        iframe { width: 100%; height: 100%; border: none; }
+                    </style>
+                </head>
+                <body>
+                    <iframe src="${recursoDestino}" allow="fullscreen; autoplay"></iframe>
+                </body>
+                </html>
+            `);
+            
+            entornoMatriz.document.close();
+        }
+    </script>
+</body>
+</html>
